@@ -1,59 +1,47 @@
 const fileInput = document.getElementById('fileInput');
 const dropZone = document.getElementById('drop-zone');
-const resultSection = document.getElementById('result-section');
-const resultBox = document.getElementById('result-box');
 const loader = document.getElementById('loader');
-const originalImg = document.getElementById('original-img');
-const resultImg = document.getElementById('result-img');
+const uploadContent = document.querySelector('.upload-content');
+const resultSection = document.getElementById('result-section');
+
+// Slider Elements
+const sliderRange = document.getElementById('slider-range');
+const imgForeground = document.getElementById('img-foreground');
+const sliderButton = document.getElementById('slider-button');
+const imgBefore = document.getElementById('img-before');
+const imgAfter = document.getElementById('img-after');
 const downloadBtn = document.getElementById('download-btn');
 
-// Drag & Drop Effects
-dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropZone.classList.add('dragover');
+// --- SLIDER LOGIC ---
+sliderRange.addEventListener('input', (e) => {
+    const value = e.target.value;
+    imgForeground.style.width = `${value}%`;
+    sliderButton.style.left = `${value}%`;
 });
 
-dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('dragover');
-});
-
-dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('dragover');
-    const files = e.dataTransfer.files;
-    if (files.length) handleFile(files[0]);
-});
-
-// File Input Change
+// --- UPLOAD LOGIC ---
 fileInput.addEventListener('change', () => {
-    if (fileInput.files.length) handleFile(fileInput.files[0]);
+    if (fileInput.files.length) processFile(fileInput.files[0]);
 });
 
-function handleFile(file) {
+async function processFile(file) {
     if (!file.type.match('image.*')) {
-        alert("Mohon upload file gambar (JPG/PNG)");
+        alert("Wajib upload file gambar!");
         return;
     }
 
-    // Tampilkan Preview Original
+    // UI Loading State
+    uploadContent.classList.add('hidden');
+    loader.classList.remove('hidden');
+
+    // 1. Set Preview Gambar Asli (Before)
     const reader = new FileReader();
     reader.onload = (e) => {
-        originalImg.src = e.target.result;
+        imgBefore.src = e.target.result;
     };
     reader.readAsDataURL(file);
 
-    // Persiapkan UI
-    resultSection.classList.remove('hidden');
-    loader.classList.remove('hidden');
-    resultBox.classList.add('hidden');
-    
-    // Scroll ke bawah sedikit
-    resultSection.scrollIntoView({ behavior: 'smooth' });
-
-    uploadToServer(file);
-}
-
-async function uploadToServer(file) {
+    // 2. Upload ke Backend
     const formData = new FormData();
     formData.append('image', file);
 
@@ -65,22 +53,35 @@ async function uploadToServer(file) {
 
         const data = await response.json();
 
-        if (data.url || data.low_resolution) {
-            // Sukses
-            const finalUrl = data.url || data.low_resolution; // Prioritaskan URL utama
-            resultImg.src = finalUrl;
-            downloadBtn.href = finalUrl;
+        if (response.ok && (data.url || data.low_resolution)) {
+            const resultUrl = data.url || data.low_resolution;
             
-            loader.classList.add('hidden');
-            resultBox.classList.remove('hidden');
-        } else {
-            throw new Error("Gagal mendapatkan URL gambar");
-        }
+            // Set Hasil (After)
+            imgAfter.src = resultUrl;
+            downloadBtn.href = resultUrl;
 
+            // Tampilkan Result
+            dropZone.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+        } else {
+            throw new Error(data.error || "Gagal memproses gambar");
+        }
     } catch (error) {
         console.error(error);
-        alert("Maaf, terjadi kesalahan saat memproses gambar.");
-        loader.classList.add('hidden');
-        resultSection.classList.add('hidden');
+        alert("Gagal: " + error.message);
+        resetApp();
     }
+}
+
+function resetApp() {
+    fileInput.value = '';
+    loader.classList.add('hidden');
+    uploadContent.classList.remove('hidden');
+    dropZone.classList.remove('hidden');
+    resultSection.classList.add('hidden');
+    
+    // Reset Slider
+    sliderRange.value = 50;
+    imgForeground.style.width = '50%';
+    sliderButton.style.left = '50%';
 }
