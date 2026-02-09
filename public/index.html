@@ -2,77 +2,75 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SANN Remove BG AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SANN404 Remove BG Pro</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
+    <div class="aurora-bg"></div>
+
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">SANN<span class="highlight">404</span></div>
-            <div class="menu">
-                <a href="#" class="active">Home</a>
-                <a href="#features">Fitur</a>
-                <a href="#dev">Developer</a>
-            </div>
+        <div class="logo">
+            <i class="fa-solid fa-layer-group"></i> SANN<span>404</span>
         </div>
+        <div class="status-dot"></div>
     </nav>
 
-    <header class="hero">
-        <div class="hero-content">
-            <span class="badge">AI Powered 2026</span>
-            <h1>Hapus Background <br>Dalam <span class="text-gradient">Sekejap</span></h1>
-            <p>Teknologi penghapusan latar belakang otomatis tercanggih. Gratis, cepat, dan presisi tinggi untuk kebutuhan desain Anda.</p>
-            
-            <div class="upload-area" id="drop-zone">
-                <div class="icon-upload"><i class="fas fa-cloud-upload-alt"></i></div>
-                <h3>Upload Gambar Anda</h3>
-                <p>atau drag & drop disini</p>
-                <input type="file" id="fileInput" accept="image/*" hidden>
-                <button class="btn-primary" onclick="document.getElementById('fileInput').click()">Pilih Foto</button>
-            </div>
-            
-            <p class="terms">Mendukung JPG, PNG. Max 5MB.</p>
+    <main class="container">
+        <div class="hero">
+            <span class="pill">✨ AI Version 2.0 (2026)</span>
+            <h1>Hapus Background <br><span class="gradient-text">Otomatis & Presisi</span></h1>
+            <p>Teknologi AI terbaru dari SANN404 Forum. Gratis tanpa batasan.</p>
         </div>
-        
-        <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Demo" class="floating-img">
-        </div>
-    </header>
 
-    <section id="result-section" class="result-container hidden">
-        <div class="loader" id="loader">
-            <div class="spinner"></div>
-            <p>Sedang memproses magic...</p>
-        </div>
-        
-        <div class="result-box" id="result-box">
-            <h2>Hasil AI Magic</h2>
-            <div class="comparison">
-                <div class="img-wrapper">
-                    <span class="label">Original</span>
-                    <img id="original-img" src="" alt="Original">
+        <div class="upload-card" id="drop-zone">
+            <div class="upload-content">
+                <div class="icon-box">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
                 </div>
-                <div class="img-wrapper">
-                    <span class="label">No Background</span>
-                    <img id="result-img" src="" alt="Result">
+                <h3>Upload Gambar</h3>
+                <p>Tap atau drag foto kesini</p>
+                <button class="btn-main" onclick="document.getElementById('fileInput').click()">
+                    Pilih Dari Galeri
+                </button>
+                <input type="file" id="fileInput" accept="image/*" hidden>
+            </div>
+            
+            <div class="loading-state hidden" id="loader">
+                <div class="spinner"></div>
+                <p id="loading-text">Sedang menganalisa pixel...</p>
+            </div>
+        </div>
+
+        <div id="result-section" class="result-section hidden">
+            <div class="result-header">
+                <h3>Hasil Magic 🎨</h3>
+                <button class="btn-close" onclick="resetApp()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="slider-container">
+                <div class="img-background">
+                    <img id="img-after" src="" alt="No BG"> </div>
+                <div class="img-foreground" id="img-foreground">
+                    <img id="img-before" src="" alt="Original"> </div>
+                <input type="range" min="0" max="100" value="50" class="slider" id="slider-range">
+                <div class="slider-button" id="slider-button">
+                    <i class="fa-solid fa-arrows-left-right"></i>
                 </div>
             </div>
-            <a id="download-btn" href="#" class="btn-primary download" target="_blank" download>
-                <i class="fas fa-download"></i> Download HD
+
+            <a id="download-btn" href="#" class="btn-download" download>
+                <i class="fa-solid fa-download"></i> Simpan ke Galeri
             </a>
         </div>
-    </section>
+    </main>
 
-    <footer id="dev">
-        <div class="footer-content">
-            <p>Developed with <i class="fas fa-heart"></i> by</p>
-            <h3>SANN404 FORUM</h3>
-            <p class="copyright">© 2026 Sann404 Tech. All rights reserved.</p>
-        </div>
+    <footer>
+        <p>Developed with 💙 by <b>SANN404 FORUM</b></p>
+        <p class="ver">v2.0.1 Stable</p>
     </footer>
 
     <script src="script.js"></script>
